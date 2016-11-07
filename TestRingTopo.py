@@ -1,6 +1,9 @@
 #!/usr/bin/python
+from this import s
+
 from mininet.topo import Topo
 from mininet.net import Mininet
+from mininet.node import RemoteController, OVSSwitch
 from mininet.util import dumpNodeConnections
 from mininet.log import setLogLevel
 class SingleSwitchTopo(Topo):
@@ -11,10 +14,7 @@ class SingleSwitchTopo(Topo):
     Topo.__init__(self)
     slist = []
     for i in range(n):
-        if i == 0:
-            switch = self.addSwitch('s%i' % (i + 1),stp = 1)
-        else:
-            switch = self.addSwitch('s%i' % (i + 1))
+        switch = self.addSwitch('s%i' % (i + 1),cls=OVSSwitch)
         host = self.addHost('h%s' % ( i + 1))
         self.addLink(host, switch)
         slist.append(switch)
@@ -26,9 +26,13 @@ class SingleSwitchTopo(Topo):
 
 def simpleTest():
   "Create and test a simple network"
-  topo = SingleSwitchTopo(n=4)
+  m = 4
+  topo = SingleSwitchTopo(n=m)
   net = Mininet(topo)
   net.start()
+  for i in range(m):
+   net.get('s%i' %(i +1)).cmd('ovs-vsctl set bridge s%i stp-enable=true'%(i +1 ))
+
   print "Dumping host connections"
   dumpNodeConnections(net.hosts)
   print "Testing network connectivity"
