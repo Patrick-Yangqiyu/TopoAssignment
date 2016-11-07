@@ -30,8 +30,10 @@ def simpleTest():
   topo = SingleSwitchTopo(n=m)
   net = Mininet(topo)
   net.start()
-  for i in range(m):
-   net.get('s%i' %(i +1)).cmd('ovs-vsctl set bridge s%i stp-enable=true'%(i +1 ))
+  net.get('s1').cmd('ovs-vsctl set bridge s1 stp-enable=true')
+  net.get('s2').cmd('ovs-vsctl set bridge s2 stp-enable=true')
+  net.get('s3').cmd('ovs-vsctl set bridge s3 stp-enable=true')
+  net.get('s4').cmd('ovs-vsctl set bridge s4 stp-enable=true')
 
   print "Dumping host connections"
   dumpNodeConnections(net.hosts)
