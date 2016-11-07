@@ -12,7 +12,7 @@ class SingleSwitchTopo(Topo):
     slist = []
     for i in range(n):
         switch = self.addSwitch('s%i' % (i + 1))
-        host = self.addHost('h%s' % (h + 1))
+        host = self.addHost('h%s' % ( + 1))
         self.addLink(host, switch)
         slist.append(switch)
     for i in range(n):
