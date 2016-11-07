@@ -15,7 +15,7 @@ class SingleSwitchTopo(Topo):
     Topo.__init__(self)
     slist = []
     for i in range(n):
-        switch = self.addSwitch('s%i' % (i + 1),cls=OVSSwitch)
+        switch = self.addSwitch('s%s' % (i + 1),cls=OVSSwitch)
         host = self.addHost('h%s' % ( i + 1))
         self.addLink(host, switch)
         slist.append(switch)
@@ -31,10 +31,9 @@ def simpleTest():
   topo = SingleSwitchTopo(n=m)
   net = Mininet(topo)
   net.start()
-  net.get('s1').cmd('ovs-vsctl set bridge s1 stp-enable=true')
-  net.get('s2').cmd('ovs-vsctl set bridge s2 stp-enable=true')
-  net.get('s3').cmd('ovs-vsctl set bridge s3 stp-enable=true')
-  net.get('s4').cmd('ovs-vsctl set bridge s4 stp-enable=true')
+  for i in range(m):
+      net.get('s%s'%(i + 1)).cmd('ovs-vsctl set bridge s%s stp-enable=true'%(i+1))
+ 
   CLI(net)
   print "Dumping host connections"
   dumpNodeConnections(net.hosts)
