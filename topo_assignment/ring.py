@@ -116,7 +116,7 @@ class RingTopo(Topo):
 
         for i in range(n):
             if i != n - 1:
-                self.addLink(slist[i], slist[i + 1])
+                self.addLink(slist[i], slist[i + 1],port1=downlink, port2=uplink, **lconfig)
             else:
                 self.addLink(slist[i], slist[0])
         receiver = self.addHost('receiver')
@@ -251,7 +251,7 @@ def main():
     link = custom(TCLink, bw=args.bw, delay='1ms',
                   max_queue_size=200)
 
-    net = Mininet(topo=topo, host=host, link=link, controller=POXBridge)
+    net = Mininet(topo=topo, host=host, link=link )
 
     net.start()
     for i in range(m):
