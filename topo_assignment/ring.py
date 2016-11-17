@@ -95,17 +95,17 @@ class RingTopo(Topo):
         slist = []
         for i in range(n):
             switch = self.addSwitch('s%s' % (i + 1), cls=OVSSwitch)
-            host = self.addHost('h%s' % (i + 1), **hconfig)
-            self.addLink(host, switch,port1=0, port2=hostlink, **lconfig)
+            host = self.addHost('h%s' % (i + 1))
+            self.addLink(host, switch)
             slist.append(switch)
             if n == 1:
                 receiver = self.addHost('receiver')
-                self.addLink(receiver, switch ,port1=0, port2=uplink, **lconfig)
+                self.addLink(receiver, switch )
         for i in range(n):
             if i != n - 1:
                 self.addLink(slist[i], slist[i + 1])
             else:
-                self.addLink(slist[i], slist[0],port1=downlink, port2=uplink, **lconfig)
+                self.addLink(slist[i], slist[0])
 
 
         # # The following template code creates a parking lot topology
