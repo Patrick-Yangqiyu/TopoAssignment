@@ -11,7 +11,7 @@ from mininet.node import CPULimitedHost
 from mininet.link import TCLink
 from mininet.util import custom, quietRun, dumpNetConnections
 from mininet.cli import CLI
-from mininet.node import RemoteController, OVSSwitch
+from mininet.node import OVSSwitch, Controller
 from time import sleep, time
 from multiprocessing import Process
 from subprocess import Popen
@@ -65,6 +65,21 @@ if not os.path.exists(args.dir):
 
 lg.setLogLevel('info')
 
+
+class POXBridge(Controller):
+    "Custom Controller class to invoke POX forwarding.l2_learning"
+
+    def start(self):
+        "Start POX learning switch"
+        self.pox = '%s/pox/pox.py' % os.environ['HOME']
+        self.cmd(self.pox, 'forwarding.l2_learning &')
+
+    def stop(self):
+        "Stop POX"
+        self.cmd('kill %' + self.pox)
+
+
+controllers = {'poxbridge': POXBridge}
 # Topology to be instantiated in Mininet
 class RingTopo(Topo):
     "Parking Lot Topology"
@@ -227,8 +242,8 @@ def check_prereqs():
 def main():
     "Create and run experiment"
     start = time()
-    # m = input("please input the size of the network n:")
-    topo = RingTopo(n=args.n)
+    m = input("please input the size of the network n:")
+    topo = RingTopo(n= m)
     host = custom(CPULimitedHost, cpu=.15)  # 15% of system bandwidth
     link = custom(TCLink, bw=args.bw, delay='1ms',
                   max_queue_size=200)
@@ -236,7 +251,7 @@ def main():
     net = Mininet(topo=topo, host=host, link=link)
 
     net.start()
-    for i in range(args.n):
+    for i in range(m):
         net.get('s%s' % (i + 1)).cmd('ovs-vsctl set bridge s%s stp-enable=true' % (i + 1))
     cprint("*** Dumping network connections:", "green")
     dumpNetConnections(net)
@@ -250,7 +265,7 @@ def main():
         CLI(net)
     else:
         cprint("*** Running experiment", "magenta")
-        run_parkinglot_expt(net, n=args.n)
+        run_parkinglot_expt(net, n= m)
 
     net.stop()
     end = time()
