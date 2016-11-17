@@ -110,17 +110,17 @@ class RingTopo(Topo):
         slist = []
         for i in range(n):
             switch = self.addSwitch('s%s' % (i + 1), cls=OVSSwitch)
-            host = self.addHost('h%s' % (i + 1))
-            self.addLink(host, switch)
+            host = self.addHost('h%s' % (i + 1),**hconfig)
+            self.addLink(host, switch, port1=0, port2=hostlink, **lconfig)
             slist.append(switch)
 
         for i in range(n):
             if i != n - 1:
                 self.addLink(slist[i], slist[i + 1])
             else:
-                self.addLink(slist[i], slist[0],bw=10, delay='5ms', max_queue_size=1000, loss=50, use_htb=True)
+                self.addLink(slist[i], slist[0])
         receiver = self.addHost('receiver')
-        self.addLink(receiver, slist[0])
+        self.addLink(receiver, slist[0], port1=0, port2=uplink, **lconfig)
 
         # # The following template code creates a parking lot topology
         # # for N = 1
@@ -203,6 +203,7 @@ def run_parkinglot_expt(net, n):
         progress(5)
     for i in range(n):
         senderlist[i].waitOutput()
+        progress(1)
     # sender1 = net.getNodeByName('h1')
     # sender2 = net.getNodeByName('h2')
     # sender3 = net.getNodeByName('h3')
@@ -250,11 +251,12 @@ def main():
     link = custom(TCLink, bw=args.bw, delay='1ms',
                   max_queue_size=200)
 
-    net = Mininet(topo=topo, host=host, link=link)
+    net = Mininet(topo=topo, host=host, link=link, controller=POXBridge)
 
     net.start()
     for i in range(m):
         net.get('s%s' % (i + 1)).cmd('ovs-vsctl set bridge s%s stp-enable=true' % (i + 1))
+        print "start STP on s%s"%(i + 1)
     print "sleep 30s for STP"
     sleep(30)
     print "wake up"
