@@ -101,6 +101,7 @@ class RingTopo(Topo):
             if n == 1:
                 receiver = self.addHost('receiver')
                 self.addLink(receiver, switch )
+                print "add receiver"
         for i in range(n):
             if i != n - 1:
                 self.addLink(slist[i], slist[i + 1])
