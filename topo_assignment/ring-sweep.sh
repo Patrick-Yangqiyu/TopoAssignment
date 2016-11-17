@@ -29,7 +29,7 @@ bw=10
 
 for n in 1 2 3 4 5; do
     dir=$rootdir/n$n
-    python parkinglot.py --bw $bw \
+    python ring.py --bw $bw \
         --dir $dir \
         -t 30 \
         -n $n
