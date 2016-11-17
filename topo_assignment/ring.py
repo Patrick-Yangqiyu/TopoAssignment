@@ -98,16 +98,14 @@ class RingTopo(Topo):
             host = self.addHost('h%s' % (i + 1))
             self.addLink(host, switch)
             slist.append(switch)
-            if n == 1:
-                receiver = self.addHost('receiver')
-                self.addLink(receiver, switch )
-                print "add receiver"
+
         for i in range(n):
             if i != n - 1:
                 self.addLink(slist[i], slist[i + 1])
             else:
                 self.addLink(slist[i], slist[0],bw=10, delay='5ms', max_queue_size=1000, loss=50, use_htb=True)
-
+        receiver = self.addHost('receiver')
+        self.addLink(receiver, slist[0])
 
         # # The following template code creates a parking lot topology
         # # for N = 1
