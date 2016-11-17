@@ -255,7 +255,7 @@ def main():
     for i in range(m):
         net.get('s%s' % (i + 1)).cmd('ovs-vsctl set bridge s%s stp-enable=true' % (i + 1))
     print "sleep 30s for STP"
-    time.sleep(30)
+    sleep(30)
     print "wake up"
     cprint("*** Dumping network connections:", "green")
     dumpNetConnections(net)
