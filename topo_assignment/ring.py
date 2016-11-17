@@ -196,7 +196,7 @@ def run_parkinglot_expt(net, n):
     recvr.cmd('iperf -s -p', port,
               '> %s/iperf_server.txt' % args.dir, '&')
     for i in range(n):
-        sender = net.getNodeByName('h%s'%(n + 1))
+        sender = net.getNodeByName('h%s'%(i + 1))
         waitListening(sender, recvr, port)
         sender.sendCmd('iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, sender))
         sender.waitOutput()
