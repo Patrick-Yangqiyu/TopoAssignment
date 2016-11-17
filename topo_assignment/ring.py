@@ -181,7 +181,7 @@ def run_parkinglot_expt(net, n):
     recvr.cmd('iperf -s -p', port,
               '> %s/iperf_server.txt' % args.dir, '&')
     for i in range(n):
-        sender = net.getNodeByName('h%s'%(n))
+        sender = net.getNodeByName('h%s'%(n + 1))
         waitListening(sender, recvr, port)
         sender.sendCmd('iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, sender))
         sender.waitOutput()
@@ -227,9 +227,8 @@ def check_prereqs():
 def main():
     "Create and run experiment"
     start = time()
-    m = input("please input the size of the network n:")
-    topo = RingTopo(n=m)
-    #topo = RingTopo(n=args.n)
+    # m = input("please input the size of the network n:")
+    topo = RingTopo(n=args.n)
     host = custom(CPULimitedHost, cpu=.15)  # 15% of system bandwidth
     link = custom(TCLink, bw=args.bw, delay='1ms',
                   max_queue_size=200)
