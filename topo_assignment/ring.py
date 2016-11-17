@@ -199,8 +199,9 @@ def run_parkinglot_expt(net, n):
         sender = net.getNodeByName('h%s'%(i + 1))
         waitListening(sender, recvr, port)
         sender.sendCmd('iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, sender))
-        sender.waitOutput()
         senderlist.append(sender)
+    for i in range(n):
+        senderlist[i].waitOutput()
     # sender1 = net.getNodeByName('h1')
     # sender2 = net.getNodeByName('h2')
     # sender3 = net.getNodeByName('h3')
@@ -253,6 +254,9 @@ def main():
     net.start()
     for i in range(m):
         net.get('s%s' % (i + 1)).cmd('ovs-vsctl set bridge s%s stp-enable=true' % (i + 1))
+    print "sleep 30s for STP"
+    time.sleep(30)
+    print "wake up"
     cprint("*** Dumping network connections:", "green")
     dumpNetConnections(net)
 
