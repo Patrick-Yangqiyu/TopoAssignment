@@ -238,7 +238,8 @@ def main():
     net = Mininet(topo=topo, host=host, link=link)
 
     net.start()
-
+    for i in range(m):
+        net.get('s%s' % (i + 1)).cmd('ovs-vsctl set bridge s%s stp-enable=true' % (i + 1))
     cprint("*** Dumping network connections:", "green")
     dumpNetConnections(net)
 
