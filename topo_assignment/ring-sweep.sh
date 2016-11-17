@@ -27,7 +27,7 @@ bw=10
 # In this example, we are assuming that each
 # client is connected to port 2 on its switch.
 
-for n in 1 2 3 4 5; do
+for n in  3 4 5 6 7; do
     dir=$rootdir/n$n
     python ring.py --bw $bw \
         --dir $dir \
