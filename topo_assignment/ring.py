@@ -105,7 +105,7 @@ class RingTopo(Topo):
             if i != n - 1:
                 self.addLink(slist[i], slist[i + 1])
             else:
-                self.addLink(slist[i], slist[0])
+                self.addLink(slist[i], slist[0],bw=10, delay='5ms', max_queue_size=1000, loss=50, use_htb=True)
 
 
         # # The following template code creates a parking lot topology
