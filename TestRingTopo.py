@@ -33,7 +33,7 @@ def simpleTest():
   net.start()
   for i in range(m):
       net.get('s%s'%(i + 1)).cmd('ovs-vsctl set bridge s%s stp-enable=true'%(i+1))
- 
+
   CLI(net)
   print "Dumping host connections"
   dumpNodeConnections(net.hosts)
