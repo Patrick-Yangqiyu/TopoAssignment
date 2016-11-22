@@ -106,7 +106,7 @@ class RingTopo(Topo):
 
         slist = []
         for i in range(n):
-            switch = self.addSwitch('s%s' % (i + 1), cls=OVSSwitch)
+            switch = self.addSwitch('s%s' % (i + 1), cls=LinuxBridge)
             host = self.addHost('h%s' % (i + 1),**hconfig)
             self.addLink(host, switch,port1=0, port2=0, **lconfig)
             slist.append(switch)
