@@ -37,7 +37,7 @@ for n in  3 ; do
         --maxy $bw \
         --xlabel 'Time (s)' \
         --ylabel 'Rate (Mbps)' \
-        -i 's.*-eth.*' \
+        -i 's.*-eth2' \
         -f $dir/bwm.txt \
         -o $dir/rate.png
     python util/plot_tcpprobe.py \
