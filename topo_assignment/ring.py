@@ -118,7 +118,7 @@ class RingTopo(Topo):
             if i != n - 1:
                 self.addLink(slist[i], slist[i + 1],port1=downlink, port2=uplink, **lconfig)
             else:
-                self.addLink(slist[i], slist[0])
+                self.addLink(slist[i], slist[0],port1=downlink, port2=uplink, **lconfig)
         receiver = self.addHost('receiver')
         self.addLink(receiver, slist[0],port1=0, port2=uplink, **lconfig)
 
