@@ -111,7 +111,7 @@ class RingTopo(Topo):
                    'loss' : loss}
 
         slist = []
-        for i in range(n - 1):
+        for i in range(n):
             switch = self.addSwitch('s%s' % (i + 1), cls=OVSSwitch)
             host = self.addHost('h%s' % (i + 1),**hconfig)
             self.addLink(host, switch)
@@ -119,9 +119,9 @@ class RingTopo(Topo):
 
         for i in range(n):
             if i != n - 1:
-                self.addLink(slist[i], slist[i + 1])
+                self.addLink(slist[i], slist[i + 1],**lconfig)
             else:
-                self.addLink(slist[i], slist[0],delay='2ms')
+                self.addLink(slist[i], slist[0],**lconfig)
 
 def waitListening(client, server, port):
     "Wait until server is listening on port"
@@ -196,10 +196,10 @@ def main():
     m = args.n
     topo = RingTopo(n= m)
     host = custom(CPULimitedHost, cpu=.15)  # 15% of system bandwidth
-    link = custom(TCLink, bw=args.bw, delay='0ms',loss =0,
+    link = custom(TCLink, bw=args.bw, delay=args.delay,loss = args.loss,
                   max_queue_size=200)
 
-    net = Mininet(topo=topo, host=host, link=TCLink, controller=POXBridge)
+    net = Mininet(topo=topo, host=host, link=link, controller=POXBridge)
 
     net.start()
     for i in range(m):
