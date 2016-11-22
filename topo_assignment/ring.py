@@ -108,7 +108,7 @@ class RingTopo(Topo):
         hconfig = {'cpu': cpu}
         lconfig = {'bw': bw, 'delay': delay,
                    'max_queue_size': max_queue_size,
-                   'loss' : loss}
+                   'loss': loss}
 
         slist = []
         for i in range(n):
