@@ -21,7 +21,7 @@ start=`date`
 exptid=`date +%b%d-%H:%M`
 
 bw=10
-
+rootdir=Ring-$exptid-Single-Delay$delay-Loss$loss
 # Note: you need to make sure you report the results
 # for the correct port!
 # In this example, we are assuming that each
@@ -29,7 +29,7 @@ bw=10
 for delay in "0ms 1ms 3ms" ;do
     for loss in 0 1 2 ;do
         for n in  4 5 6; do
-            rootdir=Ring-$exptid-Single-Delay$delay-Loss$loss
+
             dir=$rootdir/n$n
             python ringsingle.py --bw $bw \
                 --dir $dir \
