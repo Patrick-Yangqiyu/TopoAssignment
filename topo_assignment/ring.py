@@ -113,7 +113,7 @@ class RingTopo(Topo):
         slist = []
         for i in range(n):
             switch = self.addSwitch('s%s' % (i + 1), cls=OVSSwitch)
-            host = self.addHost('h%s' % (i + 1))
+            host = self.addHost('h%s' % (i + 1),**hconfig)
             self.addLink(host, switch)
             slist.append(switch)
 
@@ -172,10 +172,10 @@ def run_parkinglot_expt(net, n):
         waitListening(sender, recvr, port)
         sender.sendCmd('iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, sender))
         senderlist.append(sender)
-
+        progress(1)
     for i in range(n - 1):
         senderlist[i].waitOutput()
-
+        progress(1)
     recvr.cmd('kill %iperf')
     #  Shut down monitors
     monitor.terminate()
