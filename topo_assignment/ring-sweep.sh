@@ -21,33 +21,37 @@ start=`date`
 exptid=`date +%b%d-%H:%M`
 
 bw=10
-delay='1ms'
-loss=0
-rootdir=Ring-$exptid-All-Delay$delay-Loss$loss
+
+rootdir=Ring-$exptid-All
 # Note: you need to make sure you report the results
 # for the correct port!
 # In this example, we are assuming that each
 # client is connected to port 2 on its switch.
+for delay in  1 3 0 ;do
+    for loss in 0 1 2 ;do
+        for n in  4 5 6; do
 
-for n in  4 5 6; do
-    dir=$rootdir/n$n
-    python ring.py --bw $bw \
-        --dir $dir \
-        --delay $delay\
-        --loss $loss\
-        -t 30 \
-        -n $n
-    python util/plot_rate.py --rx \
-        --maxy $bw \
-        --xlabel 'Time (s)' \
-        --ylabel 'Rate (Mbps)' \
-        -i 's.*-eth1' \
-        -f $dir/bwm.txt \
-        -o $dir/rate.png
-    python util/plot_tcpprobe.py \
-        -f $dir/tcp_probe.txt \
-        -o $dir/cwnd.png
+            dir=$rootdir/Delay$delay-ms-Loss$loss/n$n
+            python ring.py --bw $bw \
+                --dir $dir \
+                --delay $delay'ms'\
+                --loss $loss\
+                -t 30 \
+                -n $n
+            python util/plot_rate.py --rx \
+                --maxy $bw \
+                --xlabel 'Time (s)' \
+                --ylabel 'Rate (Mbps)' \
+                -i 's.*-eth1' \
+                -f $dir/bwm.txt \
+                -o $dir/rate.png
+            python util/plot_tcpprobe.py \
+                -f $dir/tcp_probe.txt \
+                -o $dir/cwnd.png
+        done
+    done
 done
+
 
 echo "Started at" $start
 echo "Ended at" `date`
