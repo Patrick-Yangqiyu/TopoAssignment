@@ -32,7 +32,7 @@ for n in  4 5 6; do
     python ring.py --bw $bw \
         --dir $dir \
         -t 30 \
-        -n $n \
+        -n $n 
     python util/plot_rate.py --rx \
         --maxy $bw \
         --xlabel 'Time (s)' \
