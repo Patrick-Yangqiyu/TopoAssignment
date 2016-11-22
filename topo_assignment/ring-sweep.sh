@@ -21,8 +21,8 @@ start=`date`
 exptid=`date +%b%d-%H:%M`
 rootdir=Ring-$exptid
 bw=10
-delay='2ms'
-loss=10
+delay='1ms'
+loss=0
 
 # Note: you need to make sure you report the results
 # for the correct port!
