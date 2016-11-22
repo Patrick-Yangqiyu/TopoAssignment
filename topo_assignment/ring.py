@@ -36,7 +36,10 @@ parser.add_argument('--bw', '-b',
                     type=float,
                     help="Bandwidth of network links",
                     required=True)
-
+parser.add_argument('--loss', '-lo',
+                    type=float,
+                    help="loss rate",
+                    required=True)
 parser.add_argument('--delay', '-de',
 
                     help="Delay",
@@ -90,7 +93,7 @@ class RingTopo(Topo):
     "Parking Lot Topology"
 
     def __init__(self, n=1, cpu=.1, bw=10, delay=None,
-                 max_queue_size=None, **params):
+                 max_queue_size=None,loss =0 , **params):
         """Parking lot topology with one receiver
            and n clients.
            n: number of clients
@@ -105,10 +108,10 @@ class RingTopo(Topo):
         hconfig = {'cpu': cpu}
         lconfig = {'bw': bw, 'delay': delay,
                    'max_queue_size': max_queue_size,
-                  }
+                   'loss' : loss}
 
         slist = []
-        for i in range(n):
+        for i in range(n - 1):
             switch = self.addSwitch('s%s' % (i + 1), cls=OVSSwitch)
             host = self.addHost('h%s' % (i + 1),**hconfig)
             self.addLink(host, switch)
@@ -118,7 +121,7 @@ class RingTopo(Topo):
             if i != n - 1:
                 self.addLink(slist[i], slist[i + 1])
             else:
-                self.addLink(slist[i], slist[0],delay='0ms')
+                self.addLink(slist[i], slist[0],delay='2ms')
 
 def waitListening(client, server, port):
     "Wait until server is listening on port"
@@ -193,10 +196,10 @@ def main():
     m = args.n
     topo = RingTopo(n= m)
     host = custom(CPULimitedHost, cpu=.15)  # 15% of system bandwidth
-    link = custom(TCLink, bw=args.bw, delay='0ms',
+    link = custom(TCLink, bw=args.bw, delay='0ms',loss =0,
                   max_queue_size=200)
 
-    net = Mininet(topo=topo,  controller=POXBridge)
+    net = Mininet(topo=topo, host=host, link=TCLink, controller=POXBridge)
 
     net.start()
     for i in range(m):
