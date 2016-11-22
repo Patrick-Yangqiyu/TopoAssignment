@@ -22,7 +22,7 @@ exptid=`date +%b%d-%H:%M`
 
 bw=10
 delay='0ms'
-loss=1
+loss=0
 rootdir=Ring-$exptid-Single-Delay$delay-Loss$loss
 # Note: you need to make sure you report the results
 # for the correct port!
@@ -33,6 +33,8 @@ for n in  4 5 6; do
     dir=$rootdir/n$n
     python ring.py --bw $bw \
         --dir $dir \
+        --delay $delay\
+        --loss $loss\
         -t 30 \
         -n $n
     python util/plot_rate.py --rx \
