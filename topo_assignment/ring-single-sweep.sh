@@ -29,7 +29,6 @@ rootdir=Ring-$exptid-Single
 for delay in  1 3 0 ;do
     for loss in 0 1 2 ;do
         for n in  4 5 6; do
-
             dir=$rootdir/Delay$delay"ms"-Loss$loss"%"/n$n
             python ringsingle.py --bw $bw \
                 --dir $dir \
