@@ -199,7 +199,7 @@ def main():
     link = custom(TCLink, bw=args.bw, delay='0ms',loss = args.loss,
                   max_queue_size=200)
 
-    net = Mininet(topo=topo, host=host, link=link, controller=POXBridge)
+    net = Mininet(topo=topo, controller=POXBridge)
 
     net.start()
     for i in range(m):
