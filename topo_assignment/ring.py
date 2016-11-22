@@ -113,9 +113,9 @@ class RingTopo(Topo):
 
         for i in range(n):
             if i != n - 1:
-                self.addLink(slist[i], slist[i + 1],port1=downlink, port2=uplink, **lconfig)
+                self.addLink(slist[i], slist[i + 1],**lconfig)
             else:
-                self.addLink(slist[i], slist[0],port1=downlink, port2=uplink, **lconfig)
+                self.addLink(slist[i], slist[0],**lconfig)
         receiver = self.addHost('receiver')
         self.addLink(receiver, slist[0],port1=0, port2=uplink, **lconfig)
         # Create the actual topology
@@ -251,8 +251,8 @@ def main():
     link = custom(TCLink, bw=args.bw, delay='1ms',
                   max_queue_size=200)
 
-    # net = Mininet(topo=topo, host=host, link=link, controller=POXBridge)
-    net = Mininet(topo=topo, controller=POXBridge)
+    net = Mininet(topo=topo, host=host, link=link, controller=POXBridge)
+
     net.start()
     for i in range(m):
         net.get('s%s' % (i + 1)).cmd('ovs-vsctl set bridge s%s stp-enable=true' % (i + 1))
