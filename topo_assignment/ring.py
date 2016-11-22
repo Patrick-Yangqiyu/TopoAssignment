@@ -36,10 +36,7 @@ parser.add_argument('--bw', '-b',
                     type=float,
                     help="Bandwidth of network links",
                     required=True)
-parser.add_argument('--loss', '-lo',
-                    type=float,
-                    help="loss rate",
-                    required=True)
+
 parser.add_argument('--delay', '-de',
 
                     help="Delay",
@@ -196,7 +193,7 @@ def main():
     m = args.n
     topo = RingTopo(n= m)
     host = custom(CPULimitedHost, cpu=.15)  # 15% of system bandwidth
-    link = custom(TCLink, bw=args.bw, delay='0ms',loss = args.loss,
+    link = custom(TCLink, bw=args.bw, delay='0ms',
                   max_queue_size=200)
 
     net = Mininet(topo=topo,  controller=POXBridge)
