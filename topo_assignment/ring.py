@@ -36,6 +36,14 @@ parser.add_argument('--bw', '-b',
                     type=float,
                     help="Bandwidth of network links",
                     required=True)
+parser.add_argument('--loss', '-lo',
+                    type=float,
+                    help="loss rate",
+                    required=True)
+parser.add_argument('--delay', '-de',
+
+                    help="Delay",
+                    default="1ms")
 
 parser.add_argument('--dir', '-d',
                     help="Directory to store outputs",
