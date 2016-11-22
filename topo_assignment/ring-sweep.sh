@@ -27,7 +27,7 @@ rootdir=Ring-$exptid-All
 # for the correct port!
 # In this example, we are assuming that each
 # client is connected to port 2 on its switch.
-for delay in  1 3 0 ;do
+for delay in  1 3 ;do
     for loss in 0 1 2 ;do
         for n in  4 5 6; do
 
