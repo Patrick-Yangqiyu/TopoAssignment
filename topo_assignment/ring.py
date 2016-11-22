@@ -93,7 +93,7 @@ class RingTopo(Topo):
     "Parking Lot Topology"
 
     def __init__(self, n=1, cpu=.1, bw=10, delay=None,
-                 max_queue_size=None,loss =0 , **params):
+                 max_queue_size=None, loss=0, **params):
         """Parking lot topology with one receiver
            and n clients.
            n: number of clients
