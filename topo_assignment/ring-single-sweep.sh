@@ -21,14 +21,13 @@ start=`date`
 exptid=`date +%b%d-%H:%M`
 
 bw=10
-DEALYLIST={"0ms 1ms 3ms"}
-LOSSLIST= {"0 1"}
+
 # Note: you need to make sure you report the results
 # for the correct port!
 # In this example, we are assuming that each
 # client is connected to port 2 on its switch.
-for delay in $DEALYLIST ;do
-    for loss in $LOSSLIST ;do
+for delay in "0ms 1ms 3ms" ;do
+    for loss in 0 1 2 ;do
         for n in  4 5 6; do
             rootdir=Ring-$exptid-Single-Delay$delay-Loss$loss
             dir=$rootdir/n$n
