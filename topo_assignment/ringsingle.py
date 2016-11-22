@@ -121,7 +121,7 @@ class RingTopo(Topo):
             if i != n - 1:
                 self.addLink(slist[i], slist[i + 1],**lconfig)
             else:
-                self.addLink(slist[i], slist[0],**lconfig)
+                self.addLink(slist[i], slist[0],delay=args.delay,loss=args.loss)
 
 def waitListening(client, server, port):
     "Wait until server is listening on port"
