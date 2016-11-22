@@ -32,7 +32,8 @@ for n in  3 ; do
     python ring.py --bw $bw \
         --dir $dir \
         -t 30 \
-        -n $n
+        -n $n \
+        -c
     python util/plot_rate.py --rx \
         --maxy $bw \
         --xlabel 'Time (s)' \
