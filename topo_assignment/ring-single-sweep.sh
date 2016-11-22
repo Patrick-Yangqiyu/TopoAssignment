@@ -21,8 +21,8 @@ start=`date`
 exptid=`date +%b%d-%H:%M`
 
 bw=10
-DEALYLIST= '0ms' '1ms' '3ms'
-LOSSLIST= 0 1
+DEALYLIST={"0ms 1ms 3ms"}
+LOSSLIST= {"0 1"}
 # Note: you need to make sure you report the results
 # for the correct port!
 # In this example, we are assuming that each
