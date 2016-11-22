@@ -33,7 +33,7 @@ for delay in  1 3 ;do
             dir=$rootdir/Delay$delay-ms-Loss$loss/n$n
             python ringsingle.py --bw $bw \
                 --dir $dir \
-                --delay $delay+"ms"\
+                --delay $delay"ms"\
                 --loss $loss\
                 -t 30 \
                 -n $n
