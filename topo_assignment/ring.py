@@ -196,10 +196,10 @@ def main():
     m = args.n
     topo = RingTopo(n= m)
     host = custom(CPULimitedHost, cpu=.15)  # 15% of system bandwidth
-    link = custom(TCLink, bw=args.bw, delay=None,loss = 0,
+    link = custom(TCLink, bw=args.bw, delay='0ms',loss = args.loss,
                   max_queue_size=200)
 
-    net = Mininet(topo=topo, host=host,controller=POXBridge)
+    net = Mininet(topo=topo, host=host, link=link, controller=POXBridge)
 
     net.start()
     for i in range(m):
