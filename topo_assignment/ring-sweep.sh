@@ -21,9 +21,9 @@ start=`date`
 exptid=`date +%b%d-%H:%M`
 
 bw=10
-delay='0ms'
+delay='1ms'
 loss=0
-rootdir=Ring-$exptid-Single-Delay$delay-Loss$loss
+rootdir=Ring-$exptid-All-Delay$delay-Loss$loss
 # Note: you need to make sure you report the results
 # for the correct port!
 # In this example, we are assuming that each
