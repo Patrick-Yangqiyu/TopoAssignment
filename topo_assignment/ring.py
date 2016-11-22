@@ -101,10 +101,7 @@ class RingTopo(Topo):
         lconfig = {'bw': bw, 'delay': delay,
                    'max_queue_size': max_queue_size }
 
-        # Create the actual topology
-        # receiver = self.addHost('receiver')
 
-        # Switch ports 1:uplink 2:hostlink 3:downlink
         uplink, hostlink, downlink = 1, 2, 3
 
         slist = []
@@ -121,7 +118,10 @@ class RingTopo(Topo):
                 self.addLink(slist[i], slist[0],port1=downlink, port2=uplink, **lconfig)
         receiver = self.addHost('receiver')
         self.addLink(receiver, slist[0],port1=0, port2=uplink, **lconfig)
+        # Create the actual topology
+        # receiver = self.addHost('receiver')
 
+        # Switch ports 1:uplink 2:hostlink 3:downlink
         # # The following template code creates a parking lot topology
         # # for N = 1
         # # TODO: Replace the template code to create a parking lot topology for any arbitrary N (>= 1)
@@ -208,8 +208,6 @@ def run_parkinglot_expt(net, n):
     # sender2 = net.getNodeByName('h2')
     # sender3 = net.getNodeByName('h3')
     # Start the receiver
-
-
     #
     # waitListening(sender2, recvr, port)
     # waitListening(sender3, recvr, port)
@@ -225,11 +223,13 @@ def run_parkinglot_expt(net, n):
     # sender1.waitOutput()
     # sender2.waitOutput()
     # sender3.waitOutput()
-    recvr.cmd('kill %iperf')
     # sender1.cmd('kill %iperf')
     # sender2.cmd('kill %iperf')
     # sender3.cmd('kill %iperf')
     #  Shut down monitors
+
+    recvr.cmd('kill %iperf')
+
     monitor.terminate()
     stop_tcpprobe()
 
@@ -251,8 +251,8 @@ def main():
     link = custom(TCLink, bw=args.bw, delay='1ms',
                   max_queue_size=200)
 
-    net = Mininet(topo=topo, host=host, link=link, controller=POXBridge)
-
+    # net = Mininet(topo=topo, host=host, link=link, controller=POXBridge)
+    net = Mininet(topo=topo, controller=POXBridge)
     net.start()
     for i in range(m):
         net.get('s%s' % (i + 1)).cmd('ovs-vsctl set bridge s%s stp-enable=true' % (i + 1))
