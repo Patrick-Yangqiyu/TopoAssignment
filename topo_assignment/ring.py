@@ -110,9 +110,9 @@ class RingTopo(Topo):
 
         for i in range(n):
             if i != n - 1:
-                self.addLink(slist[i], slist[i + 1])
+                self.addLink(slist[i], slist[i + 1],**lconfig)
             else:
-                self.addLink(slist[i], slist[0])
+                self.addLink(slist[i], slist[0],**lconfig)
 
 def waitListening(client, server, port):
     "Wait until server is listening on port"
@@ -164,7 +164,7 @@ def run_parkinglot_expt(net, n):
         sender.sendCmd('iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, sender))
         senderlist.append(sender)
 
-    for i in range(n):
+    for i in range(n - 1):
         senderlist[i].waitOutput()
 
     recvr.cmd('kill %iperf')
