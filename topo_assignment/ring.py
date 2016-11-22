@@ -101,8 +101,8 @@ class RingTopo(Topo):
         lconfig = {'bw': bw, 'delay': delay,
                    'max_queue_size': max_queue_size }
 
-
-        uplink, hostlink, downlink = 1, 2, 3
+        #
+        # uplink, hostlink, downlink = 1, 2, 3
 
         slist = []
         for i in range(n):
@@ -117,7 +117,7 @@ class RingTopo(Topo):
             else:
                 self.addLink(slist[i], slist[0],**lconfig)
         receiver = self.addHost('receiver')
-        self.addLink(receiver, slist[0],port1=0, port2=uplink, **lconfig)
+        # self.addLink(receiver, slist[0],port1=0, port2=uplink, **lconfig)
         # Create the actual topology
         # receiver = self.addHost('receiver')
 
