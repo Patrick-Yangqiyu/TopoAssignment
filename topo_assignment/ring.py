@@ -106,7 +106,7 @@ class RingTopo(Topo):
 
         slist = []
         for i in range(n):
-            switch = self.addSwitch('s%s' % (i + 1), cls=OVSSwitch,stp = True,failmode = 'standalone')
+            switch = self.addSwitch('s%s' % (i + 1),stp = 1,failmode = 'standalone')
             host = self.addHost('h%s' % (i + 1),**hconfig)
             self.addLink(host, switch,port1=0, port2=0, **lconfig)
             slist.append(switch)
@@ -204,29 +204,6 @@ def run_parkinglot_expt(net, n):
     for i in range(n):
         senderlist[i].waitOutput()
         progress(1)
-    # sender1 = net.getNodeByName('h1')
-    # sender2 = net.getNodeByName('h2')
-    # sender3 = net.getNodeByName('h3')
-    # Start the receiver
-    #
-    # waitListening(sender2, recvr, port)
-    # waitListening(sender3, recvr, port)
-    # TODO: start the sender iperf processes and wait for the flows to finish
-    # Hint: Use getNodeByName() to get a handle on each sender.
-    # Hint: Use sendCmd() and waitOutput() to start iperf and wait for them to finish
-    # Hint: waitOutput waits for the command to finish allowing you to wait on a particular process on the host
-    # iperf command to start flow: 'iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, node_name)
-    # Hint (not important): You may use progress(t) to track your experiment progress
-    # sender1.sendCmd('iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, sender1))
-    # sender2.sendCmd('iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, sender2))
-    # sender3.sendCmd('iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, sender3))
-    # sender1.waitOutput()
-    # sender2.waitOutput()
-    # sender3.waitOutput()
-    # sender1.cmd('kill %iperf')
-    # sender2.cmd('kill %iperf')
-    # sender3.cmd('kill %iperf')
-    #  Shut down monitors
 
     recvr.cmd('kill %iperf')
 
@@ -254,12 +231,12 @@ def main():
     net = Mininet(topo=topo, host=host, link=link)
 
     net.start()
-    for i in range(m):
-        net.get('s%s' % (i + 1)).cmd('ovs-vsctl set bridge s%s stp-enable=true' % (i + 1))
-        print "start STP on s%s"%(i + 1)
-    print "sleep 30s for STP"
-    progress(30)
-    print "wake up"
+    # for i in range(m):
+    #     net.get('s%s' % (i + 1)).cmd('ovs-vsctl set bridge s%s stp-enable=true' % (i + 1))
+    #     print "start STP on s%s"%(i + 1)
+    # print "sleep 30s for STP"
+    # progress(30)
+    # print "wake up"
     cprint("*** Dumping network connections:", "green")
     dumpNetConnections(net)
 
