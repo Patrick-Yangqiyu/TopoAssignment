@@ -3,7 +3,7 @@
 "Assignment 4 - Creates a parking lot topology, \
     generates flows from senders to the receiver, \
     measures throughput of each flow"
-from mininet.nodelib import LinuxBridge
+
 from mininet.topo import Topo
 from mininet.net import Mininet
 from mininet.log import lg, output
@@ -106,7 +106,7 @@ class RingTopo(Topo):
 
         slist = []
         for i in range(n):
-            switch = self.addSwitch('s%s' % (i + 1), cls=LinuxBridge)
+            switch = self.addSwitch('s%s' % (i + 1), cls=OVSSwitch)
             host = self.addHost('h%s' % (i + 1),**hconfig)
             self.addLink(host, switch,port1=0, port2=0, **lconfig)
             slist.append(switch)
@@ -117,7 +117,7 @@ class RingTopo(Topo):
             else:
                 self.addLink(slist[i], slist[0],**lconfig)
         receiver = self.addHost('receiver')
-        # self.addLink(receiver, slist[0],port1=0, port2=uplink, **lconfig)
+        self.addLink(receiver, slist[0],port1=0, port2=5, **lconfig)
         # Create the actual topology
         # receiver = self.addHost('receiver')
 
