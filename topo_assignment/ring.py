@@ -85,7 +85,7 @@ class RingTopo(Topo):
     "Parking Lot Topology"
 
     def __init__(self, n=1, cpu=.1, bw=10, delay=None,
-                 max_queue_size=None, **params):
+                 max_queue_size=None,loss =0 , **params):
         """Parking lot topology with one receiver
            and n clients.
            n: number of clients
@@ -99,7 +99,8 @@ class RingTopo(Topo):
         # Host and link configuration
         hconfig = {'cpu': cpu}
         lconfig = {'bw': bw, 'delay': delay,
-                   'max_queue_size': max_queue_size }
+                   'max_queue_size': max_queue_size,
+                   'loss' : loss}
 
         slist = []
         for i in range(n):
@@ -187,7 +188,7 @@ def main():
     m = args.n
     topo = RingTopo(n= m)
     host = custom(CPULimitedHost, cpu=.15)  # 15% of system bandwidth
-    link = custom(TCLink, bw=args.bw, delay='1ms',
+    link = custom(TCLink, bw=args.bw, delay=args.delay,loss = args.loss,
                   max_queue_size=200)
 
     net = Mininet(topo=topo, host=host, link=link, controller=POXBridge)
