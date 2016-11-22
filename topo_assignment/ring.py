@@ -3,7 +3,7 @@
 "Assignment 4 - Creates a parking lot topology, \
     generates flows from senders to the receiver, \
     measures throughput of each flow"
-
+from mininet.nodelib import LinuxBridge
 from mininet.topo import Topo
 from mininet.net import Mininet
 from mininet.log import lg, output
