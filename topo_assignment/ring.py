@@ -101,12 +101,6 @@ class RingTopo(Topo):
         lconfig = {'bw': bw, 'delay': delay,
                    'max_queue_size': max_queue_size }
 
-        # Create the actual topology
-        # receiver = self.addHost('receiver')
-
-        # Switch ports 1:uplink 2:hostlink 3:downlink
-        uplink, hostlink, downlink = 1, 2, 3
-
         slist = []
         for i in range(n):
             switch = self.addSwitch('s%s' % (i + 1), cls=OVSSwitch)
@@ -119,37 +113,6 @@ class RingTopo(Topo):
                 self.addLink(slist[i], slist[i + 1])
             else:
                 self.addLink(slist[i], slist[0])
-        receiver = self.addHost('receiver')
-        self.addLink(receiver, slist[0])
-
-        # # The following template code creates a parking lot topology
-        # # for N = 1
-        # # TODO: Replace the template code to create a parking lot topology for any arbitrary N (>= 1)
-        # # Begin: Template code
-        # s1 = self.addSwitch('s1')
-        # h1 = self.addHost('h1', **hconfig)
-        #
-        # # Wire up receiver
-        # self.addLink(receiver, s1,
-        #               port1=0, port2=uplink, **lconfig)
-        #
-        # # Wire up clients:
-        # self.addLink(h1, s1,
-        #               port1=0, port2=hostlink, **lconfig)
-        # s2 = self.addSwitch('s2')
-        # h2 = self.addHost('h2', **hconfig)
-        # self.addLink(s1, s2,
-        #              port1=downlink, port2=uplink, **lconfig)
-        # self.addLink(h2, s2,
-        #              port1=0, port2=hostlink, **lconfig)
-        # s3 = self.addSwitch('s3')
-        # h3 = self.addHost('h3', **hconfig)
-        # self.addLink(s2, s3,
-        #              port1=downlink, port2=uplink, **lconfig)
-        # self.addLink(h3, s3,
-        #              port1=0, port2=hostlink, **lconfig)
-
-
 
 def waitListening(client, server, port):
     "Wait until server is listening on port"
@@ -191,44 +154,20 @@ def run_parkinglot_expt(net, n):
     # Get receiver and clients
     senderlist = []
 
-    recvr = net.getNodeByName('receiver')
+    recvr = net.getNodeByName('h%s'%(n))
     port = 5001
     recvr.cmd('iperf -s -p', port,
               '> %s/iperf_server.txt' % args.dir, '&')
-    for i in range(n):
+    for i in range(n - 1):
         sender = net.getNodeByName('h%s'%(i + 1))
         waitListening(sender, recvr, port)
         sender.sendCmd('iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, sender))
         senderlist.append(sender)
-        progress(5)
+
     for i in range(n):
         senderlist[i].waitOutput()
-        progress(1)
-    # sender1 = net.getNodeByName('h1')
-    # sender2 = net.getNodeByName('h2')
-    # sender3 = net.getNodeByName('h3')
-    # Start the receiver
 
-
-    #
-    # waitListening(sender2, recvr, port)
-    # waitListening(sender3, recvr, port)
-    # TODO: start the sender iperf processes and wait for the flows to finish
-    # Hint: Use getNodeByName() to get a handle on each sender.
-    # Hint: Use sendCmd() and waitOutput() to start iperf and wait for them to finish
-    # Hint: waitOutput waits for the command to finish allowing you to wait on a particular process on the host
-    # iperf command to start flow: 'iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, node_name)
-    # Hint (not important): You may use progress(t) to track your experiment progress
-    # sender1.sendCmd('iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, sender1))
-    # sender2.sendCmd('iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, sender2))
-    # sender3.sendCmd('iperf -c %s -p %s -t %d -i 1 -yc > %s/iperf_%s.txt' % (recvr.IP(), 5001, seconds, args.dir, sender3))
-    # sender1.waitOutput()
-    # sender2.waitOutput()
-    # sender3.waitOutput()
     recvr.cmd('kill %iperf')
-    # sender1.cmd('kill %iperf')
-    # sender2.cmd('kill %iperf')
-    # sender3.cmd('kill %iperf')
     #  Shut down monitors
     monitor.terminate()
     stop_tcpprobe()
@@ -245,7 +184,7 @@ def check_prereqs():
 def main():
     "Create and run experiment"
     start = time()
-    m = input("please input the size of the network n:")
+    m = args.n
     topo = RingTopo(n= m)
     host = custom(CPULimitedHost, cpu=.15)  # 15% of system bandwidth
     link = custom(TCLink, bw=args.bw, delay='1ms',
