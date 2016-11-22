@@ -19,11 +19,11 @@ trap ctrlc SIGINT
 
 start=`date`
 exptid=`date +%b%d-%H:%M`
-rootdir=Ring-$exptid
+
 bw=10
 delay='1ms'
 loss=0
-
+rootdir=Ring-$exptid-Delay$delay-Loss$loss
 # Note: you need to make sure you report the results
 # for the correct port!
 # In this example, we are assuming that each
