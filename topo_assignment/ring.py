@@ -106,7 +106,7 @@ class RingTopo(Topo):
 
         slist = []
         for i in range(n):
-            switch = self.addSwitch('s%s' % (i + 1), cls=OVSSwitch)
+            switch = self.addSwitch('s%s' % (i + 1), cls=OVSSwitch,stp = True,failmode = 'standalone')
             host = self.addHost('h%s' % (i + 1),**hconfig)
             self.addLink(host, switch,port1=0, port2=0, **lconfig)
             slist.append(switch)
@@ -251,7 +251,7 @@ def main():
     link = custom(TCLink, bw=args.bw, delay='1ms',
                   max_queue_size=200)
 
-    net = Mininet(topo=topo, host=host, link=link, controller=POXBridge)
+    net = Mininet(topo=topo, host=host, link=link)
 
     net.start()
     for i in range(m):
