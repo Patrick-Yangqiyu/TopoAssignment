@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Function: run the parking lot topology for various
+# Function: run the ring topology for various
 # value of N
 
 # Exit on any failure
@@ -19,7 +19,7 @@ trap ctrlc SIGINT
 
 start=`date`
 exptid=`date +%b%d-%H:%M`
-rootdir=parkinglot-$exptid
+rootdir=Ring-$exptid
 bw=10
 
 # Note: you need to make sure you report the results
@@ -32,7 +32,7 @@ for n in  4 5 6; do
     python ring.py --bw $bw \
         --dir $dir \
         -t 30 \
-        -n $n 
+        -n $n
     python util/plot_rate.py --rx \
         --maxy $bw \
         --xlabel 'Time (s)' \
