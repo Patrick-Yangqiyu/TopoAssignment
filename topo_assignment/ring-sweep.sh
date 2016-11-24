@@ -45,7 +45,7 @@ for delay in  0 1 10 ;do
                 -i 's.*-eth1' \
                 -f $dir/bwm.txt \
                 -o $dir/rate.png \
-                --rx
+                --rx 1
             python util/plot_tcpprobe.py \
                 -f $dir/tcp_probe.txt \
                 -o $dir/cwnd.png
