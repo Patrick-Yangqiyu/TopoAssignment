@@ -27,7 +27,7 @@ rootdir=Ring-$exptid-All
 # for the correct port!
 # In this example, we are assuming that each
 # client is connected to port 2 on its switch.
-for delay in  0 1 10 ;do
+for delay in  0 1 100 ;do
     for loss in 0 1 2 ;do
         for n in   5 ; do
 
@@ -45,7 +45,7 @@ for delay in  0 1 10 ;do
                 -i 's.*-eth1' \
                 -f $dir/bwm.txt \
                 -o $dir/rate.png \
-                --rx 
+                --rx
             python util/plot_tcpprobe.py \
                 -f $dir/tcp_probe.txt \
                 -o $dir/cwnd.png
