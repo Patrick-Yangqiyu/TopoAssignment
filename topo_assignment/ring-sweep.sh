@@ -29,7 +29,7 @@ rootdir=Ring-$exptid-All
 # client is connected to port 2 on its switch.
 for delay in  0 1 10 ;do
     for loss in 0 1 2 ;do
-        for n in  4 5 6; do
+        for n in   5 ; do
 
             dir=$rootdir/Delay$delay"ms"-Loss$loss"%"/n$n
             python ring.py --bw $bw \
